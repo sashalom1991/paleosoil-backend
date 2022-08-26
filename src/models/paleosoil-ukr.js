@@ -1,0 +1,92 @@
+const { Schema, model } = require('mongoose');
+const Joi = require('joi');
+
+const palesoilUkrSchema = Schema({
+  id: { type: Number },
+  settlement: { type: String },
+  district: { type: String },
+  region: { type: String },
+  x: { type: Number },
+  y: { type: Number },
+  natural_zones: { type: String },
+  physiographical_l: { type: String },
+  locality: { type: String },
+  object: { type: String },
+  researcher: { type: String },
+  year: { type: Number },
+  research_methods: { type: String },
+  modern_soil: { type: String },
+  soil_m: { type: Number },
+  buried_soil: { type: String },
+  paleosoil_m: { type: Number },
+  period_holocene: { type: String },
+  arch_dating: { type: String },
+  references: { type: String },
+  pdf: { type: String },
+  foto: { type: String },
+  small_foto: { type: String },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+  },
+});
+
+const JoiShemaPaleosoilUa = Joi.object({
+  id: Joi.number().integer(),
+  settlement: Joi.string(),
+  district: Joi.string(),
+  region: Joi.string(),
+  x: Joi.number(),
+  y: Joi.number(),
+  natural_zones: Joi.string(),
+  physiographical_l: Joi.string(),
+  locality: Joi.string(),
+  object: Joi.string(),
+  researcher: Joi.string(),
+  year: Joi.number().integer(),
+  research_methods: Joi.string(),
+  modern_soil: Joi.string(),
+  soil_m: Joi.number(),
+  buried_soil: Joi.string(),
+  paleosoil_m: Joi.number(),
+  period_holocene: Joi.string(),
+  arch_dating: Joi.string(),
+  references: Joi.string(),
+  pdf: Joi.string(),
+  foto: Joi.string(),
+  small_foto: Joi.string(),
+});
+
+const JoiShemaPaleosoilUaUpdate = Joi.object({
+  id: Joi.number().integer(),
+  settlement: Joi.string(),
+  district: Joi.string(),
+  region: Joi.string(),
+  x: Joi.number(),
+  y: Joi.number(),
+  natural_zones: Joi.string(),
+  physiographical_l: Joi.string(),
+  locality: Joi.string(),
+  object: Joi.string(),
+  researcher: Joi.string(),
+  year: Joi.number().integer().less(4),
+  research_methods: Joi.string(),
+  modern_soil: Joi.string(),
+  soil_m: Joi.number(),
+  buried_soil: Joi.string(),
+  paleosoil_m: Joi.number(),
+  period_holocene: Joi.string(),
+  arch_dating: Joi.string(),
+  references: Joi.string(),
+  pdf: Joi.string(),
+  foto: Joi.string(),
+  small_foto: Joi.string(),
+}).min(1);
+
+const PaleosoilUkrPoints = model('paleosoil-ukr-points', palesoilUkrSchema);
+
+module.exports = {
+  PaleosoilUkrPoints,
+  JoiShemaPaleosoilUa,
+  JoiShemaPaleosoilUaUpdate,
+};

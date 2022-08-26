@@ -1,0 +1,723 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.1",
+    "title": "Paleosil application backend",
+    "description": "Paleosil application backend documentation",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "servers": [
+    { "url": "http://localhost:8080" },
+    { "url": "http://localhost:8080" }
+  ],
+  "tags": [
+    {
+      "name": "Authorization",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Paleosoil-ua",
+      "description": "Paleosoil ua-points DB endpoints"
+    }
+  ],
+  "paths": {
+    "/api/auth/register": {
+      "post": {
+        "tags": ["Authorization"],
+        "summary": "User registration",
+        "parameters": [],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registration successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "409": {
+            "description": "Provided email already exists",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Authorization"],
+        "summary": "User login",
+        "parameters": [],
+        "requestBody": {
+          "description": "Login object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          },
+          "401": {
+            "description": "Email or password is wrong",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "get": {
+        "tags": ["Authorization"],
+        "summary": "User logout",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "Successful operation"
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/paleosoil/ua": {
+      "get": {
+        "tags": ["Paleosoil-ua"],
+        "summary": "Points of paleosoil DB UA",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaleoSoilGetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/paleosoil/ua/add": {
+      "post": {
+        "tags": ["Paleosoil-ua"],
+        "summary": "Add Paleosoil ua-point",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaleoSoilRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaleoSoilGetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/paleosoil/ua/{id}": {
+      "delete": {
+        "tags": ["Paleosoil-ua"],
+        "summary": "Paleosoil ua-points delete transaction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "message": {
+                    "type": "string",
+                    "example": "Point of paleosoil-ua deleted"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/paleosoil/ua/change/{id}": {
+      "put": {
+        "tags": ["Paleosoil-ua"],
+        "summary": "Paleosoil ua-points delete transaction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaleoSoilRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaleoSoilGetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "schema": { "message": "validation failed" }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["email", "password", "name"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 12,
+            "description": "User's password",
+            "example": "qwerty123"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 12,
+            "description": "User's name",
+            "example": "Mike"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Registration successful"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "description": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGI5YTIwMDc0YjQyOTE4ZmFjZmUxYSIsImlhdCI6MTY0NDkyODA1MCwiZXhwIjoxNjQ0OTI5ODUwfQ.m2SwgVqZNJOYo6CVRn3JPu2oWlS4eN5oVlsDuKByLZ8"
+              },
+              "user": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "Bismark@gmail.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Otto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "message": "Registration successful",
+          "data": {
+            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGI5YTIwMDc0YjQyOTE4ZmFjZmUxYSIsImlhdCI6MTY0NDkyODA1MCwiZXhwIjoxNjQ0OTI5ODUwfQ.m2SwgVqZNJOYo6CVRn3JPu2oWlS4eN5oVlsDuKByLZ8",
+            "user": { "email": "d.snata@gmail.com", "name": "Daniela" }
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 12,
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGI5YTIwMDc0YjQyOTE4ZmFjZmUxYSIsImlhdCI6MTY0NDkyODA1MCwiZXhwIjoxNjQ0OTI5ODUwfQ.m2SwgVqZNJOYo6CVRn3JPu2oWlS4eN5oVlsDuKByLZ8"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "example": "Bismark@gmail.com"
+              },
+              "name": {
+                "type": "string",
+                "example": "Otto"
+              }
+            }
+          }
+        },
+        "example": {
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGI5YTIwMDc0YjQyOTE4ZmFjZmUxYSIsImlhdCI6MTY0NDkyODA1MCwiZXhwIjoxNjQ0OTI5ODUwfQ.m2SwgVqZNJOYo6CVRn3JPu2oWlS4eN5oVlsDuKByLZ8",
+          "user": { "email": "d.snata@gmail.com", "name": "Daniela" }
+        }
+      },
+      "PaleoSoilGetResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 167,
+            "description": "number on DB catalog"
+          },
+          "settlement": {
+            "type": "string",
+            "example": "Неполоківці",
+            "description": "Name of settlement in Ukraine"
+          },
+          "district": {
+            "type": "string",
+            "example": "Вінницький",
+            "description": "Name of district-level in Ukraine"
+          },
+          "region": {
+            "type": "string",
+            "example": "Житомирська",
+            "description": "Name of region in Ukraine"
+          },
+          "x": {
+            "type": "number",
+            "example": 49.666816,
+            "description": "Latitude of object in the map"
+          },
+          "y": {
+            "type": "number",
+            "example": 34.956716,
+            "description": "Longitude of object in the map"
+          },
+          "natural_zones": {
+            "type": "string",
+            "example": "Мішані ліси",
+            "description": "Natural Zones of object"
+          },
+          "physiographical_l": {
+            "type": "string",
+            "example": "Мішані ліси",
+            "description": "Physiographical Lands of object"
+          },
+          "locality": {
+            "type": "string",
+            "example": "Сторожівський курганний могильник",
+            "description": "Locality of object (natural or historical)"
+          },
+          "object": {
+            "type": "string",
+            "example": "Лівий берег р.Любич, розріз 1",
+            "description": "Object is natural or historical"
+          },
+          "researcher": {
+            "type": "string",
+            "example": "Матвіїшина Жанна, Пархоменко Олександр",
+            "description": "Researcher(s) of object"
+          },
+          "year": {
+            "type": "number",
+            "example": 1998,
+            "description": "Year of research"
+          },
+          "research_methods": {
+            "type": "string",
+            "example": "Палеопедологічний (макро- та мікроморфологічний аналіз), радіовуглецеве датування, фізико-хімічний аналіз",
+            "description": "Research methods used"
+          },
+          "modern_soil": {
+            "type": "string",
+            "example": "Чорнозем типовий",
+            "description": "Modern soil"
+          },
+          "soil_m": {
+            "type": "number",
+            "example": 1.3,
+            "description": "Thickness of soil profile (m.)"
+          },
+          "buried_soil": {
+            "type": "string",
+            "example": "Чорнозем типовий",
+            "description": "Buried soil (soil material)"
+          },
+          "paleosoil_m": {
+            "type": "number",
+            "example": 0.6,
+            "description": "Thickness of paleosoil (m.)"
+          },
+          "period_holocene": {
+            "type": "string",
+            "example": "SB - Subboreal",
+            "description": "Period (phases) of Holocene"
+          },
+          "arch_dating": {
+            "type": "string",
+            "example": "Епоха бронзи (5030±70 ВР)",
+            "description": "Archaeological dating / dating"
+          },
+          "references": {
+            "type": "string",
+            "example": "Матвіїшина Ж.М., Пархоменко О.Г. Зміни грунтів і ландшафтів за даними комплексних досліджень багатошарового кургану неподалік с. Бурти на Черкащині. Наукові записки СумДПУ імені А.С. Макаренка. Географічні науки. Випуск 10. 2019. м. Суми. С.25-47.",
+            "description": "References"
+          },
+          "pdf": {
+            "type": "string",
+            "example": "https://drive.google.com/file/d/1TyP2T4T1N3OFP7OCn8jLP1kZEWnG7sog/view?usp=sharing",
+            "description": "PDF in Google disk or link to references"
+          },
+          "foto": {
+            "type": "string",
+            "example": "https://drive.google.com/file/d/1bjP9m9OwMDPm8yt5F7alZWIxn9QO5Qqp/view?usp=sharing",
+            "description": "Foto in Google disk"
+          },
+          "small_foto": {
+            "type": "string",
+            "example": "https://drive.google.com/file/d/1LM_pXU9eXVZ82iyJCrcE_BubyezIPY1d/view?usp=sharing",
+            "description": "Small foto in Google disk"
+          },
+          "owner": {
+            "type": "string",
+            "example": "6304ae01b0e1fee4a8eb74a2",
+            "description": "ObjectID user were "
+          }
+        },
+        "example": {
+          "id": 167,
+          "settlement": "Неполоківці",
+          "district": "Вінницький",
+          "region": "Житомирська",
+          "x": 49.666816,
+          "y": 34.956716,
+          "natural_zones": "Мішані ліси",
+          "physiographical_l": "Мішані ліси",
+          "locality": "Сторожівський курганний могильник",
+          "object": "Лівий берег р.Любич, розріз 1",
+          "researcher": "Матвіїшина Жанна, Пархоменко Олександр",
+          "year": 1998,
+          "research_methods": "Палеопедологічний (макро- та мікроморфологічний аналіз), радіовуглецеве датування, фізико-хімічний аналіз",
+          "modern_soil": "Чорнозем типовий",
+          "soil_m": 1.3,
+          "buried_soil": "Чорнозем типовий",
+          "paleosoil_m": 0.6,
+          "period_holocene": "SB - Subboreal",
+          "arch_dating": "Епоха бронзи (5030±70 ВР)",
+          "references": "Матвіїшина Ж.М., Пархоменко О.Г. Зміни грунтів і ландшафтів за даними комплексних досліджень багатошарового кургану неподалік с. Бурти на Черкащині. Наукові записки СумДПУ імені А.С. Макаренка. Географічні науки. Випуск 10. 2019. м. Суми. С.25-47.",
+          "pdf": "https://drive.google.com/file/d/1TyP2T4T1N3OFP7OCn8jLP1kZEWnG7sog/view?usp=sharing",
+          "foto": "https://drive.google.com/file/d/1bjP9m9OwMDPm8yt5F7alZWIxn9QO5Qqp/view?usp=sharing",
+          "small_foto": "https://drive.google.com/file/d/1LM_pXU9eXVZ82iyJCrcE_BubyezIPY1d/view?usp=sharing",
+          "owner": "6304ae01b0e1fee4a8eb74a2"
+        }
+      },
+      "PaleoSoilRequest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 167,
+            "description": "number on DB catalog"
+          },
+          "settlement": {
+            "type": "string",
+            "example": "Неполоківці",
+            "description": "Name of settlement in Ukraine"
+          },
+          "district": {
+            "type": "string",
+            "example": "Вінницький",
+            "description": "Name of district-level in Ukraine"
+          },
+          "region": {
+            "type": "string",
+            "example": "Житомирська",
+            "description": "Name of region in Ukraine"
+          },
+          "x": {
+            "type": "number",
+            "example": 49.666816,
+            "description": "Latitude of object in the map"
+          },
+          "y": {
+            "type": "number",
+            "example": 34.956716,
+            "description": "Longitude of object in the map"
+          },
+          "natural_zones": {
+            "type": "string",
+            "example": "Мішані ліси",
+            "description": "Natural Zones of object"
+          },
+          "physiographical_l": {
+            "type": "string",
+            "example": "Мішані ліси",
+            "description": "Physiographical Lands of object"
+          },
+          "locality": {
+            "type": "string",
+            "example": "Сторожівський курганний могильник",
+            "description": "Locality of object (natural or historical)"
+          },
+          "object": {
+            "type": "string",
+            "example": "Лівий берег р.Любич, розріз 1",
+            "description": "Object is natural or historical"
+          },
+          "researcher": {
+            "type": "string",
+            "example": "Матвіїшина Жанна, Пархоменко Олександр",
+            "description": "Researcher(s) of object"
+          },
+          "year": {
+            "type": "number",
+            "example": 1998,
+            "description": "Year of research"
+          },
+          "research_methods": {
+            "type": "string",
+            "example": "Палеопедологічний (макро- та мікроморфологічний аналіз), радіовуглецеве датування, фізико-хімічний аналіз",
+            "description": "Research methods used"
+          },
+          "modern_soil": {
+            "type": "string",
+            "example": "Чорнозем типовий",
+            "description": "Modern soil"
+          },
+          "soil_m": {
+            "type": "number",
+            "example": 1.3,
+            "description": "Thickness of soil profile (m.)"
+          },
+          "buried_soil": {
+            "type": "string",
+            "example": "Чорнозем типовий",
+            "description": "Buried soil (soil material)"
+          },
+          "paleosoil_m": {
+            "type": "number",
+            "example": 0.6,
+            "description": "Thickness of paleosoil (m.)"
+          },
+          "period_holocene": {
+            "type": "string",
+            "example": "SB - Subboreal",
+            "description": "Period (phases) of Holocene"
+          },
+          "arch_dating": {
+            "type": "string",
+            "example": "Епоха бронзи (5030±70 ВР)",
+            "description": "Archaeological dating / dating"
+          },
+          "references": {
+            "type": "string",
+            "example": "Матвіїшина Ж.М., Пархоменко О.Г. Зміни грунтів і ландшафтів за даними комплексних досліджень багатошарового кургану неподалік с. Бурти на Черкащині. Наукові записки СумДПУ імені А.С. Макаренка. Географічні науки. Випуск 10. 2019. м. Суми. С.25-47.",
+            "description": "References"
+          },
+          "pdf": {
+            "type": "string",
+            "example": "https://drive.google.com/file/d/1TyP2T4T1N3OFP7OCn8jLP1kZEWnG7sog/view?usp=sharing",
+            "description": "PDF in Google disk or link to references"
+          },
+          "foto": {
+            "type": "string",
+            "example": "https://drive.google.com/file/d/1bjP9m9OwMDPm8yt5F7alZWIxn9QO5Qqp/view?usp=sharing",
+            "description": "Foto in Google disk"
+          },
+          "small_foto": {
+            "type": "string",
+            "example": "https://drive.google.com/file/d/1LM_pXU9eXVZ82iyJCrcE_BubyezIPY1d/view?usp=sharing",
+            "description": "Small foto in Google disk"
+          }
+        },
+        "example": {
+          "id": 167,
+          "settlement": "Неполоківці",
+          "district": "Вінницький",
+          "region": "Житомирська",
+          "x": 49.666816,
+          "y": 34.956716,
+          "natural_zones": "Мішані ліси",
+          "physiographical_l": "Мішані ліси",
+          "locality": "Сторожівський курганний могильник",
+          "object": "Лівий берег р.Любич, розріз 1",
+          "researcher": "Матвіїшина Жанна, Пархоменко Олександр",
+          "year": 1998,
+          "research_methods": "Палеопедологічний (макро- та мікроморфологічний аналіз), радіовуглецеве датування, фізико-хімічний аналіз",
+          "modern_soil": "Чорнозем типовий",
+          "soil_m": 1.3,
+          "buried_soil": "Чорнозем типовий",
+          "paleosoil_m": 0.6,
+          "period_holocene": "SB - Subboreal",
+          "arch_dating": "Епоха бронзи (5030±70 ВР)",
+          "references": "Матвіїшина Ж.М., Пархоменко О.Г. Зміни грунтів і ландшафтів за даними комплексних досліджень багатошарового кургану неподалік с. Бурти на Черкащині. Наукові записки СумДПУ імені А.С. Макаренка. Географічні науки. Випуск 10. 2019. м. Суми. С.25-47.",
+          "pdf": "https://drive.google.com/file/d/1TyP2T4T1N3OFP7OCn8jLP1kZEWnG7sog/view?usp=sharing",
+          "foto": "https://drive.google.com/file/d/1bjP9m9OwMDPm8yt5F7alZWIxn9QO5Qqp/view?usp=sharing",
+          "small_foto": "https://drive.google.com/file/d/1LM_pXU9eXVZ82iyJCrcE_BubyezIPY1d/view?usp=sharing"
+        }
+      },
+      "TransactionDeleteResponse": {
+        "type": "object",
+        "properties": {
+          "transactions": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "1234567"
+              },
+              "typeTransaction": {
+                "type": "string",
+                "example": "+"
+              },
+              "category": {
+                "type": "string",
+                "example": "Income"
+              },
+              "сommentary": {
+                "type": "string",
+                "description": "Regular income"
+              },
+              "amountTransaction": {
+                "type": "number",
+                "example": "1.00"
+              },
+              "balance": {
+                "type": "number",
+                "example": "1.00"
+              }
+            }
+          }
+        },
+        "example": {
+          "transactions": {
+            "_id": "1234567",
+            "typeTransaction": "+",
+            "category": "Income",
+            "сommentary": "Regular income",
+            "amountTransaction": "1.00",
+            "balance": "1.00"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
