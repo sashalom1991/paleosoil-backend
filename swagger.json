@@ -100,6 +100,30 @@
         }
       }
     },
+    "/api/auth/current": {
+      "get": {
+        "tags": ["Authorization"],
+        "summary": "User current",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
     "/api/auth/logout": {
       "get": {
         "tags": ["Authorization"],
@@ -266,7 +290,7 @@
     "schemas": {
       "RegistrationRequest": {
         "type": "object",
-        "required": ["email", "password", "name"],
+        "required": ["email", "password"],
         "properties": {
           "email": {
             "type": "string",
@@ -279,13 +303,6 @@
             "maxLength": 12,
             "description": "User's password",
             "example": "qwerty123"
-          },
-          "name": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 12,
-            "description": "User's name",
-            "example": "Mike"
           }
         }
       },
@@ -309,10 +326,6 @@
                   "email": {
                     "type": "string",
                     "example": "Bismark@gmail.com"
-                  },
-                  "name": {
-                    "type": "string",
-                    "example": "Otto"
                   }
                 }
               }
@@ -323,7 +336,7 @@
           "message": "Registration successful",
           "data": {
             "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGI5YTIwMDc0YjQyOTE4ZmFjZmUxYSIsImlhdCI6MTY0NDkyODA1MCwiZXhwIjoxNjQ0OTI5ODUwfQ.m2SwgVqZNJOYo6CVRn3JPu2oWlS4eN5oVlsDuKByLZ8",
-            "user": { "email": "d.snata@gmail.com", "name": "Daniela" }
+            "user": { "email": "d.snata@gmail.com" }
           }
         }
       },
@@ -358,17 +371,13 @@
               "email": {
                 "type": "string",
                 "example": "Bismark@gmail.com"
-              },
-              "name": {
-                "type": "string",
-                "example": "Otto"
               }
             }
           }
         },
         "example": {
           "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGI5YTIwMDc0YjQyOTE4ZmFjZmUxYSIsImlhdCI6MTY0NDkyODA1MCwiZXhwIjoxNjQ0OTI5ODUwfQ.m2SwgVqZNJOYo6CVRn3JPu2oWlS4eN5oVlsDuKByLZ8",
-          "user": { "email": "d.snata@gmail.com", "name": "Daniela" }
+          "user": { "email": "d.snata@gmail.com" }
         }
       },
       "PaleoSoilGetResponse": {
