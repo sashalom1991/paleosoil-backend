@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
-const Joi = require('joi');
+const { Schema, model } = require("mongoose");
+const Joi = require("joi");
 
 const palesoilEngSchema = Schema({
   id: { type: Number },
@@ -37,7 +37,7 @@ const JoiShemaPaleosoilEng = Joi.object({
   locality: Joi.string(),
   object: Joi.string(),
   researcher: Joi.string(),
-  year: Joi.number().integer().less(4),
+  year: Joi.number().integer(),
   research_methods: Joi.string(),
   modern_soil: Joi.string(),
   soil_m: Joi.number(),
@@ -62,7 +62,7 @@ const JoiShemaPaleosoilEngUpdate = Joi.object({
   locality: Joi.string(),
   object: Joi.string(),
   researcher: Joi.string(),
-  year: Joi.number().integer().less(4),
+  year: Joi.number().integer(),
   research_methods: Joi.string(),
   modern_soil: Joi.string(),
   soil_m: Joi.number(),
@@ -76,7 +76,7 @@ const JoiShemaPaleosoilEngUpdate = Joi.object({
   small_foto: Joi.string(),
 }).min(1);
 
-const PaleosoilEngPoints = model('paleosoil-eng-points', palesoilEngSchema);
+const PaleosoilEngPoints = model("paleosoil-eng-points", palesoilEngSchema);
 
 module.exports = {
   PaleosoilEngPoints,

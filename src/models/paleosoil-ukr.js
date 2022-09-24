@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
-const Joi = require('joi');
+const { Schema, model } = require("mongoose");
+const Joi = require("joi");
 
 const palesoilUkrSchema = Schema({
   id: { type: Number },
@@ -27,7 +27,7 @@ const palesoilUkrSchema = Schema({
   small_foto: { type: String },
   owner: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: "user",
   },
 });
 
@@ -69,7 +69,7 @@ const JoiShemaPaleosoilUaUpdate = Joi.object({
   locality: Joi.string(),
   object: Joi.string(),
   researcher: Joi.string(),
-  year: Joi.number().integer().less(4),
+  year: Joi.number().integer(),
   research_methods: Joi.string(),
   modern_soil: Joi.string(),
   soil_m: Joi.number(),
@@ -83,7 +83,7 @@ const JoiShemaPaleosoilUaUpdate = Joi.object({
   small_foto: Joi.string(),
 }).min(1);
 
-const PaleosoilUkrPoints = model('paleosoil-ukr-points', palesoilUkrSchema);
+const PaleosoilUkrPoints = model("paleosoil-ukr-points", palesoilUkrSchema);
 
 module.exports = {
   PaleosoilUkrPoints,

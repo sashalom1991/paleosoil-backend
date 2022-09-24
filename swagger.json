@@ -10,8 +10,8 @@
     }
   },
   "servers": [
-    { "url": "http://localhost:8080" },
-    { "url": "http://localhost:8080" }
+    { "url": "http://localhost:8080/" },
+    { "url": "https://paleosoil-backend.herokuapp.com/" }
   ],
   "tags": [
     {
@@ -21,6 +21,10 @@
     {
       "name": "Paleosoil-ua",
       "description": "Paleosoil ua-points DB endpoints"
+    },
+    {
+      "name": "Paleosoil-en",
+      "description": "Paleosoil en-points DB endpoints"
     }
   ],
   "paths": {
@@ -238,6 +242,150 @@
       "put": {
         "tags": ["Paleosoil-ua"],
         "summary": "Paleosoil ua-points delete transaction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaleoSoilRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaleoSoilGetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "schema": { "message": "validation failed" }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/paleosoil/en": {
+      "get": {
+        "tags": ["Paleosoil-en"],
+        "summary": "Points of paleosoil DB EN",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaleoSoilGetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/paleosoil/en/add": {
+      "post": {
+        "tags": ["Paleosoil-en"],
+        "summary": "Add Paleosoil en-point",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaleoSoilRequest"
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaleoSoilGetResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/paleosoil/en/{id}": {
+      "delete": {
+        "tags": ["Paleosoil-en"],
+        "summary": "Paleosoil en-points delete transaction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "message": {
+                    "type": "string",
+                    "example": "Point of paleosoil-en deleted"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/paleosoil/en/change/{id}": {
+      "put": {
+        "tags": ["Paleosoil-en"],
+        "summary": "Paleosoil en-points delete transaction",
         "parameters": [
           {
             "name": "id",
