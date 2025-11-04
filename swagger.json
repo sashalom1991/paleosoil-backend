@@ -12,7 +12,8 @@
   "servers": [
     { "url": "http://localhost:8080/" },
     { "url": "https://paleosoil-backend.herokuapp.com/" },
-    { "url": "https://paleosoil-backend.onrender.com/" }
+    { "url": "https://paleosoil-backend.onrender.com/" },
+    { "url": "paleosoil-backend-production.up.railway.app" }
   ],
   "tags": [
     {
